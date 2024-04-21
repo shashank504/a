@@ -1,0 +1,88 @@
+import 'package:flutter/material.dart';
+
+void main() => runApp(MaterialApp(home: MyForm()));
+
+class MyForm extends StatefulWidget {
+  @override
+  _MyFormState createState() => _MyFormState();
+}
+
+class _MyFormState extends State<MyForm> {
+  final _formKey = GlobalKey<FormState>();
+  String? _name, _surname, _phone, _gender; // Make variables nullable
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(title: Text('imple Form')),
+    body: Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Name'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your name';
+                }
+                return null;
+              },
+              onSaved: (v) => _name = v,
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Surname'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your surname';
+                }
+                return null;
+              },
+              onSaved: (v) => _surname = v,
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Phone'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your phone number';
+                }
+                return null;
+              },
+              onSaved: (v) => _phone = v,
+            ),
+            TextFormField(
+              decoration: InputDecoration(labelText: 'Gender'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your gender';
+                }
+                return null;
+              },
+              onSaved: (v) => _gender = v,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                  // Do something with the form data
+                  _showSnackbar(context, 'Registration successful!');
+                }
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2), // Adjust the duration as needed
+      ),
+    );
+  }
+}

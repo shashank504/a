@@ -1,0 +1,121 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Responsive Page',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: ResponsivePage(),
+    );
+  }
+}
+
+class ResponsivePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Responsive Page'),
+      ),
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          if (constraints.maxWidth < 600) {
+            return NarrowScreenLayout();
+          } else {
+            return WideScreenLayout();
+          }
+        },
+      ),
+    );
+  }
+}
+
+class NarrowScreenLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Narrow Screen Layout',
+              style: TextStyle(fontSize: 24.0),
+            ),
+            SizedBox(height: 20.0),
+            FlutterLogo(size: 150.0),
+            SizedBox(height: 20.0),
+            Text(
+              'This layout is optimized for narrow screens.',
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class WideScreenLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Wide Screen Layout',
+                    style: TextStyle(fontSize: 24.0),
+                  ),
+                  SizedBox(height: 20.0),
+                  FlutterLogo(size: 150.0),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'This layout is optimized for wide screens.',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Second Column',
+                    style: TextStyle(fontSize: 24.0),
+                  ),
+                  SizedBox(height: 20.0),
+                  FlutterLogo(size: 150.0),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'This is a second column in the wide screen layout.',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
