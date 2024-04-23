@@ -474,24 +474,22 @@ class _GestureAnimationDemoState extends State<GestureAnimationDemo> with Single
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Responsive Page',
+      title: 'Responsive Page Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ResponsivePage(),
+      home: MyHomePage(),
     );
   }
 }
 
-class ResponsivePage extends StatelessWidget {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -499,100 +497,84 @@ class ResponsivePage extends StatelessWidget {
         title: Text('Responsive Page'),
       ),
       body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          if (constraints.maxWidth < 600) {
-            return NarrowScreenLayout();
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            // For larger screens, display a two-column layout
+            return _buildTwoColumnLayout();
           } else {
-            return WideScreenLayout();
+            // For smaller screens, display a single-column layout
+            return _buildSingleColumnLayout();
           }
         },
       ),
     );
   }
-}
 
-class NarrowScreenLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Narrow Screen Layout',
-              style: TextStyle(fontSize: 24.0),
+  Widget _buildTwoColumnLayout() {
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: Container(
+            color: Colors.blue,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                'Left Column',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
             ),
-            SizedBox(height: 20.0),
-            FlutterLogo(size: 150.0),
-            SizedBox(height: 20.0),
-            Text(
-              'This layout is optimized for narrow screens.',
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
-      ),
+        Expanded(
+          flex: 2,
+          child: Container(
+            color: Colors.green,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                'Right Column',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSingleColumnLayout() {
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            color: Colors.blue,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                'Top Section',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            color: Colors.green,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                'Bottom Section',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
 
-class WideScreenLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Wide Screen Layout',
-                    style: TextStyle(fontSize: 24.0),
-                  ),
-                  SizedBox(height: 20.0),
-                  FlutterLogo(size: 150.0),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'This layout is optimized for wide screens.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Second Column',
-                    style: TextStyle(fontSize: 24.0),
-                  ),
-                  SizedBox(height: 20.0),
-                  FlutterLogo(size: 150.0),
-                  SizedBox(height: 20.0),
-                  Text(
-                    'This is a second column in the wide screen layout.',
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 
 
