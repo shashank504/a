@@ -2,7 +2,18 @@ create a form with validation
 
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp(home: MyForm()));
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Form Validation Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: MyForm(),
+    );
+  }
+}
 
 class MyForm extends StatefulWidget {
   @override
@@ -11,75 +22,82 @@ class MyForm extends StatefulWidget {
 
 class _MyFormState extends State<MyForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _name, _surname, _phone, _gender; // Make variables nullable
+  String? _name, _email;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text('imple Form')),
-    body: Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Name'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your name';
-                }
-                return null;
-              },
-              onSaved: (v) => _name = v,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Surname'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your surname';
-                }
-                return null;
-              },
-              onSaved: (v) => _surname = v,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Phone'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your phone number';
-                }
-                return null;
-              },
-              onSaved: (v) => _phone = v,
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Gender'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your gender';
-                }
-                return null;
-              },
-              onSaved: (v) => _gender = v,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  // Do something with the form data
-                  print(
-                      'Name: $_name, Surname: $_surname, Phone: $_phone, Gender: $_gender');
-                }
-              },
-              child: Text('Submit'),
-            ),
-          ],
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Form Validation Demo')),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Name'),
+                validator: (value) =>
+                value!.isEmpty ? 'Please enter your name' : null,
+                onSaved: (value) => _name = value,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) =>
+                value!.isEmpty ? 'Please enter your email' : null,
+                onSaved: (value) => _email = value,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'number'),
+                validator: (value) =>
+                value!.isEmpty ? 'Please enter your email' : null,
+                onSaved: (value) => _email = value,
+              ),
+              SizedBox(height: 16.0),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      _showData();
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
+
+  void _showData() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Form Data'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Name: $_name'),
+                Text('Email: $_email'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
 
 
 
